@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PROTOCOL: NEW YEAR 2026</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #000;
+            overflow: hidden;
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        canvas {
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+        .message {
+            position: relative;
+            z-index: 100;
+            color: #0F0;
+            text-align: center;
+            /* Эпичное свечение */
+            text-shadow: 0 0 10px #0F0, 0 0 20px #0F0, 0 0 30px #0F0, 0 0 40px #00FF00;
+            animation: pulse 2s infinite alternate;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.6); /* Немного затемним фон под текстом */
+            border-radius: 10px;
+            border: 1px solid rgba(0, 255, 0, 0.3);
+        }
+        h1 {
+            /* Увеличили размер для эпичности */
+            font-size: 4rem;
+            margin: 0;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        p {
+            font-size: 1.5rem;
+            margin-top: 15px;
+            color: #fff;
+            /* Белый текст тоже должен светиться зеленым */
+            text-shadow: 0 0 5px #0F0, 0 0 10px #0F0;
+        }
+        .sub-text {
+            font-size: 1rem;
+            color: #888;
+            margin-top: 25px;
+            text-shadow: none;
+            opacity: 0.8;
+        }
+
+        /* Анимация пульсации текста */
+        @keyframes pulse {
+            from {
+                text-shadow: 0 0 10px #0F0, 0 0 20px #0F0, 0 0 30px #0F0;
+            }
+            to {
+                text-shadow: 0 0 20px #0F0, 0 0 30px #0F0, 0 0 40px #0F0, 0 0 50px #00FF00, 0 0 60px #00FF00;
+            }
+        }
+
+        /* Адаптив для мобилок */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            p {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="matrix"></canvas>
+
+    <div class="message">
+        <h1>WAKE UP, МАРУСЯ.</h1>
+        <p>ТЫ — ИЗБРАННАЯ.</p>
+        <p>ДОБРО ПОЖАЛОВАТЬ В РЕАЛЬНЫЙ МИР.</p>
+        <p class="sub-text">СИСТЕМА ПЕРЕЗАГРУЖЕНА. 2026 АКТИВИРОВАН.</p>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('matrix');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        // Добавили больше крутых символов
+        const katakana = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
+        const latin = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        const nums = '0123456789';
+        const symbols = '₿ΞΨΩπ∑∫∞≈≠≡≤≥';
+        const alphabet = katakana + latin + nums + symbols;
+
+        const fontSize = 16;
+        const columns = canvas.width / fontSize;
+
+        const rainDrops = [];
+
+        for( let x = 0; x < columns; x++ ) {
+            rainDrops[x] = 1;
+        }
+
+        const draw = () => {
+            // Чуть меньше "хвост" для большей динамики (0.08 вместо 0.05)
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = '#0F0';
+            ctx.font = fontSize + 'px monospace';
+
+            for(let i = 0; i < rainDrops.length; i++) {
+                const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
+                
+                // Рандомно делаем некоторые символы ярче (белыми)
+                if (Math.random() > 0.98) {
+                    ctx.fillStyle = '#FFF'; 
+                } else {
+                    ctx.fillStyle = '#0F0';
+                }
+                
+                ctx.fillText(text, i * fontSize, rainDrops[i] * fontSize);
+
+                if(rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975){
+                    rainDrops[i] = 0;
+                }
+                rainDrops[i]++;
+            }
+        };
+
+        // Чуть ускорили матрицу (25мс вместо 30мс)
+        setInterval(draw, 25);
+
+        window.addEventListener('resize', () => {
+             canvas.width = window.innerWidth;
+             canvas.height = window.innerHeight;
+        });
+    </script>
+</body>
+</html>
